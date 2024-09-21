@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Talking Trump 
+
+## Description
+The goal of this project is to build a chat-agent for web-apps that is able to impersonate Donald Trump. This project uses an OpenAI wrapper with specific pre-prompting to control the scope and the attributes of this agent. AWS Polly TTS is used for voice output.
+
 ## Getting Started
 
 First, run the development server:
