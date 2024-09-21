@@ -13,6 +13,7 @@ import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme } from '@mui/material/styles';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 export default function Home() {
     const [messages, setMessages] = useState([
@@ -121,6 +122,29 @@ export default function Home() {
       }, [messages])
     }
 
+    const synthesizeSpeech = async (text) => {
+      try {
+        const response = await fetch('/api/tts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+      } catch (error) {
+        console.error('Error synthesizing speech:', error);
+      }
+    };
+
     const renderMessage = (message) => (
       <Box>
         <ReactMarkdown
@@ -146,6 +170,11 @@ export default function Home() {
         >
           {message.content}
         </ReactMarkdown>
+        {message.role === 'assistant' && (
+          <IconButton size="small" onClick={() => synthesizeSpeech(message.content)}>
+            <VolumeUpIcon fontSize="small" />
+          </IconButton>
+        )}
       </Box>
     );
   
